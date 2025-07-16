@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>茶葉用量計算器</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      margin-top: 15px;
+      display: block;
+      font-weight: bold;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #43a047;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .note {
+      font-size: 15px;
+      color: #666;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+
+    .icon {
+      width: 2em;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🌿茶葉計算器</h2>
+
+    <label>選擇茶種</label>
+    <select id="teaType">
+      <option value="復刻紅茶">復刻紅茶</option>
+      <option value="蜜香紅茶">蜜香紅茶</option>
+      <option value="安東烏龍">安東烏龍</option>
+      <option value="金萱茶">金萱茶</option>
+      <option value="綠茶">綠茶</option>
+      <option value="蕎麥茶">蕎麥茶</option>
+      <option value="泰式奶茶">泰式奶茶</option>
+    </select>
+
+    <label>茶湯總量（cc）</label>
+    <input
+      type="number"
+      id="waterVolume"
+      placeholder="請輸入茶湯量"
+      value=""
+      min="1"
+    />
+
+    <button onclick="calculate()">計算茶葉用量</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const teaData = {
+      "復刻紅茶": {
+        ratio: 45,
+        temp: "100°C",
+        boilTime: "25分鐘",
+        steamTime: "無",
+        note: "熱水沖入茶葉悶煮25分鐘",
+      },
+      "蜜香紅茶": {
+        ratio: 50,
+        temp: "100°C",
+        boilTime: "10分鐘",
+        steamTime: "無",
+        note: "熱水沖入茶葉悶煮10分鐘",
+      },
+      "安東烏龍": {
+        ratio: 50,
+        temp: "100°C",
+        boilTime: "9分鐘",
+        steamTime: "無",
+        note: "熱水沖入茶葉悶煮9分鐘",
+      },
+      "金萱茶": {
+        ratio: 34,
+        temp: "90-95°C",
+        boilTime: "11分鐘",
+        steamTime: "無",
+        note: "熱水沖入茶葉悶煮11分鐘",
+      },
+      "綠茶": {
+        ratio: 50,
+        temp: "80-85°C",
+        boilTime: "7分鐘",
+        steamTime: "5分鐘",
+        note: "熱水沖入茶葉悶煮7分鐘後再悶5分鐘",
+      },
+      "蕎麥茶": {
+        ratio: 50,
+        temp: "熱水 100°C + 冰塊",
+        boilTime: "3分鐘",
+        steamTime: "30分鐘",
+        note: "茶葉:茶湯 = 1:50，茶湯 = 熱水:冰塊 = 3:2",
+      },
+      "泰式奶茶": {
+        ratio: 62.5,
+        temp: "熱水 100°C",
+        boilTime: "5分鐘",
+        steamTime: "無",
+        note: "奶精粉為茶湯量的0.18倍，煉乳為0.23倍，冷藏保存3天",
+      }
+    };
+
+    function calculate() {
+      const tea = document.getElementById("teaType").value;
+      const totalVolume = parseFloat(document.getElementById("waterVolume").value);
+      const data = teaData[tea];
+
+      if (isNaN(totalVolume) || totalVolume <= 0) {
+        document.getElementById("result").innerHTML =
+          "<span style='color:red;'>請輸入正確的水量</span>";
+        return;
+      }
+
+      let output = "";
+
+      if (tea === "蕎麥茶") {
+        const leaf = totalVolume / data.ratio;
+        const hot = totalVolume * 3 / 5;
+        const ice = totalVolume * 2 / 5;
+
+        output = `
+          <hr>
+          <div class="row"><span class="icon">👉</span> 茶葉用量：<strong>${leaf.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">💧</span> 熱水用量：${hot.toFixed(0)} cc</div>
+          <div class="row"><span class="icon">❄️</span> 冰塊用量：${ice.toFixed(0)} cc</div>
+          <div class="row"><span class="icon">🌡️</span> 泡茶水溫：${data.temp}</div>
+          <div class="row"><span class="icon">🕑</span> 煮茶時間：${data.boilTime}</div>
+          <div class="row"><span class="icon">😌</span> 悶茶時間：${data.steamTime}</div>
+          <div class="note"><span class="icon">📌</span> ${data.note}</div>
+        `;
+      } else if (tea === "泰式奶茶") {
+        const leaf = totalVolume / data.ratio;
+        const milkPowder = totalVolume * 0.18;
+        const condensedMilk = totalVolume * 0.23;
+
+        output = `
+          <hr>
+          <div class="row"><span class="icon">👉</span> 茶葉用量：<strong>${leaf.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">💧</span> 熱水用量：<strong>${totalVolume.toFixed(0)} cc</strong></div>
+          <div class="row"><span class="icon">🥛</span> 奶精粉：<strong>${milkPowder.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍶</span> 煉乳：<strong>${condensedMilk.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🕑</span> 煮茶時間：${data.boilTime}</div>
+          <div class="note"><span class="icon">📌</span> ${data.note}</div>
+        `;
+      } else {
+        const grams = (totalVolume / data.ratio).toFixed(1);
+        output = `
+          <hr>
+          <div class="row"><span class="icon">👉</span> 茶葉用量：<strong>${grams} 克</strong></div>
+          <div class="row"><span class="icon">🌡️</span> 泡茶水溫：${data.temp}</div>
+          <div class="row"><span class="icon">🕑</span> 煮茶時間：${data.boilTime}</div>
+          <div class="row"><span class="icon">😌</span> 曝氧時間：${data.steamTime}</div>
+          <div class="note"><span class="icon">📌</span> ${data.note}</div>
+        `;
+      }
+
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
+</body>
+</html>

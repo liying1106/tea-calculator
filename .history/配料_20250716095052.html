@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>糖水製作計算器</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #e65100;
+    }
+    label {
+      margin-top: 15px;
+      display: block;
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #ef6c00;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #e65100;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+    .icon {
+      width: 2em;
+      display: inline-block;
+    }
+    #result {
+      margin-top: 25px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .note {
+      font-size: 15px;
+      color: #666;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>糖水製作計算器</h2>
+
+    <label>選擇品項</label>
+    <select id="itemType">
+      <option value="白玉珍珠">白玉珍珠</option>
+      <option value="小粉圓_蜂蜜">小粉圓（含蜂蜜）</option>
+      <option value="小粉圓_純糖">小粉圓（純糖）</option>
+    </select>
+
+    <label>粉圓重量（g）</label>
+    <input type="number" id="weight" placeholder="例如：1000" min="1">
+
+    <button onclick="calculateSugar()">計算糖水比例</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const sugarData = {
+      "白玉珍珠": {
+        sugarRatio: 0.4,
+        waterRatio: 0.4,
+        honey: 0.1,
+        cookTime: 40,
+        steamTime: 40,
+        soakTime: 15
+      },
+      "小粉圓_蜂蜜": {
+        sugarRatio: 0.4,
+        waterRatio: 0.4,
+        honey: 0.1,
+        cookTime: 15,
+        steamTime: 15,
+        soakTime: 10
+      },
+      "小粉圓_純糖": {
+        sugarRatio: 0.4,
+        waterRatio: 0,
+        honey: 0,
+        cookTime: 5,
+        steamTime: 5,
+        soakTime: 5
+      }
+    };
+
+    function calculateSugar() {
+      const type = document.getElementById("itemType").value;
+      const weight = parseFloat(document.getElementById("weight").value);
+      const data = sugarData[type];
+
+      if (isNaN(weight) || weight <= 0) {
+        document.getElementById("result").innerHTML = "<span style='color:red;'>請輸入正確的重量</span>";
+        return;
+      }
+
+      const sugar = weight * data.sugarRatio;
+      const water = weight * data.waterRatio;
+      const honey = data.honey;
+
+      let output = `
+        <hr>
+        <div class="row"><span class="icon">🍬</span> 砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
+        <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
+        <div class="row"><span class="icon">🍯</span> 蜂蜜：<strong>${honey > 0 ? honey + ' 克' : '不加蜂蜜'}</strong></div>
+        <div class="row"><span class="icon">🔥</span> 煮：${data.cookTime} 分鐘</div>
+        <div class="row"><span class="icon">😌</span> 悶：${data.steamTime} 分鐘</div>
+        <div class="row"><span class="icon">🕒</span> 蜜糖時間：${data.soakTime} 分鐘</div>
+      `;
+
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
+</body>
+</html>
