@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,10 +13,13 @@
       background: #f9f9f9;
       color: #333;
     }
+
     h2 {
       text-align: center;
       color: #2e7d32;
+      margin-top: -2px;
     }
+
     .container {
       max-width: 480px;
       margin: auto;
@@ -25,11 +28,13 @@
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
+
     label {
       margin-top: 15px;
       display: block;
       font-weight: bold;
     }
+
     select,
     input {
       width: 100%;
@@ -38,6 +43,7 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+
     button {
       width: 100%;
       padding: 14px;
@@ -48,146 +54,184 @@
       font-size: 18px;
       margin-top: 20px;
     }
+
     button:hover {
       background-color: #388e3c;
     }
-    #result {
+
+    #tearesult {
       margin-top: 25px;
       font-size: 18px;
       line-height: 1.5;
     }
+
+    #toppingresult {
+      margin-top: 25px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
     .note {
       font-size: 15px;
       color: #666;
       margin-top: 10px;
     }
+
     .row {
       display: flex;
       align-items: center;
       margin: 4px 0;
     }
+
     .icon {
       width: 2em;
       display: inline-block;
     }
   </style>
 </head>
+
 <body>
   <div class="section">
-    <h2>🌿 茶葉計算器</h2>
+
     <div class="container">
-    
-    <label>選擇茶種</label>
-    <select id="teaType">
-      <option value="復刻紅茶">復刻紅茶</option>
-      <option value="蜜香紅茶">蜜香紅茶</option>
-      <option value="安溪烏龍">安溪烏龍</option>
-      <option value="金萱茶">金萱茶</option>
-      <option value="綠茶">綠茶</option>
-      <option value="蕎麥茶">蕎麥茶</option>
-      <option value="泰式奶茶">泰式奶茶</option>
-      <option value="洛神花茶">洛神花茶</option>
-      <option value="復刻經典奶茶">復刻經典奶茶</option>
-    </select>
-    <label>茶湯總量（cc）</label>
-    <input type="number" id="waterVolume" placeholder="請輸入茶湯量" min="1" />
-    <button onclick="calculate()">計算茶葉用量</button>
-    <div id="result"></div>
+      <h2>🌿 茶葉計算器</h2>
+      <label>選擇茶種</label>
+      <select id="teaType">
+        <option value="復刻紅茶">復刻紅茶</option>
+        <option value="蜜香紅茶">蜜香紅茶</option>
+        <option value="安溪烏龍">安溪烏龍</option>
+        <option value="金萱茶">金萱茶</option>
+        <option value="綠茶">綠茶</option>
+        <option value="蕎麥茶">蕎麥茶</option>
+        <option value="泰式奶茶">泰式奶茶</option>
+        <option value="洛神花茶">洛神花茶</option>
+        <option value="復刻經典奶茶">復刻經典奶茶</option>
+      </select>
+      <label>茶湯總量（cc）</label>
+      <input type="number" id="waterVolume" placeholder="請輸入茶湯量" min="1" />
+      <button onclick="calculate()">計算茶葉用量</button>
+      <div id="tearesult"></div>
+    </div>
+
+
   </div>
 
-  <script>
-    const teaData = {
-      "復刻紅茶": {
-        ratio: 45,
-        temp: "100°C",
-        boilTime: "25分鐘",
-        steamTime: "無",
-        note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶25分鐘\n時間到攪拌三次過濾至新的湯鍋\n冰鎮至10分鐘放置冰箱冷藏",
-        shelf: "5天"
-      },
-      "蜜香紅茶": {
-        ratio: 50,
-        temp: "100°C",
-        boilTime: "10分鐘",
-        steamTime: "無",
-        note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶10分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
-        shelf: "5小時"
-      },
-      "安溪烏龍": {
-        ratio: 50,
-        temp: "100°C",
-        boilTime: "9分鐘",
-        steamTime: "無",
-        note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶9分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
-        shelf: "5小時"
-      },
-      "金萱茶": {
-        ratio: 34,
-        temp: "90-95°C",
-        boilTime: "11分鐘",
-        steamTime: "無",
-        note: "熱水煮至90-95°C(熱水出來即是90-95°C)\n熱水沖入預先準備好的茶葉湯鍋悶11分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
-        shelf: "5小時"
-      },
-      "綠茶": {
-        ratio: 50,
-        temp: "80-85°C",
-        boilTime: "7分鐘",
-        steamTime: "5分鐘",
-        note: "熱水加RO水讓溫度到80-85°C\n熱水沖入預先準備好的茶葉湯鍋悶7分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)後曝氧5分鐘",
-        shelf: "5小時"
-      },
-      "蕎麥茶": {
-        ratio: 50,
-        temp: "熱水 100°C + 冰塊",
-        boilTime: "3分鐘",
-        steamTime: "30分鐘",
-        note: "置熱水於湯鍋煮沸至100°C\n熱水煮沸後倒入蕎麥電磁爐火力轉至4計時3分鐘\n關閉電源悶30分鐘\n將茶湯過濾至準備好冰塊的茶桶",
-        shelf: "6小時"
-      },
-      "泰式奶茶": {
-        ratio: 12.5,
-        temp: "熱水 100°C",
-        boilTime: "5分鐘",
-        steamTime: "無",
-        note: "置熱水於湯鍋煮沸至100°C\n熱水沖入預先準備好茶葉的湯鍋悶5分鐘\n時間到攪拌三次過濾至準備好的奶精及煉乳湯鍋中煮沸拌勻\n冰鎮至10°C\n冷藏保存3天",
-        shelf: "3天"
-      },
-      "洛神花茶": {
-        ratio: 60,
-        temp: "熱水 100°C",
-        boilTime: "15分鐘",
-        steamTime: "無",
-        note: "置熱水於湯鍋煮沸至100°C\n煮沸後倒入洛神花及紅話梅\n電磁爐轉至2煮15分鐘\n過濾至新的湯鍋冰鎮至10°C放置冷藏保存",
-        shelf: "5天"
-      },
-      "復刻經典奶茶": {
-        ratio: 5,
-        temp: "熱水 100°C",
-        boilTime: "無",
-        steamTime: "無",
-        note: "熱復刻奶茶過濾至準備好奶精粉的湯鍋中\n攪拌均勻後放置電磁爐加熱沸騰\n過濾至湯鍋後冰鎮至10度",
-        shelf: "3天"
-      }
-    };
+  <div style="margin: 20px 0;">
+    <div class="section">
 
-    function calculate() {
-      const tea = document.getElementById("teaType").value;
-      const totalVolume = parseFloat(document.getElementById("waterVolume").value);
-      const data = teaData[tea];
+      <div class="container">
+        <h2>🍡 配料計算器</h2>
 
-      if (isNaN(totalVolume) || totalVolume <= 0) {
-        document.getElementById("result").innerHTML = "<span style='color:red;'>請輸入正確的水量</span>";
-        return;
-      }
+        <label>選擇品項</label>
+        <select id="itemType">
+          <option value="白玉珍珠">白玉珍珠</option>
+          <option value="小粉圓">小粉圓</option>
+          <option value="小芋圓">小芋圓</option>
+          <option value="蜜糖">蜜糖</option>
+          <option value="蜜漬鳳梨">蜜漬鳳梨</option>
+        </select>
 
-      let output = "";
-      const grams = (totalVolume / data.ratio).toFixed(1);
+        <label>重量（g）</label>
+        <input type="number" id="weight" placeholder="例如：1000" min="1">
 
-      if (tea === "蕎麥茶") {
-        const hot = totalVolume * 3 / 5;
-        const ice = totalVolume * 2 / 5;
-        output = `
+        <button onclick="calculateSugar()">計算配料比例</button>
+
+        <div id="toppingresult"></div>
+      </div>
+
+      <script>
+        const teaData = {
+          "復刻紅茶": {
+            ratio: 45,
+            temp: "100°C",
+            boilTime: "25分鐘",
+            steamTime: "無",
+            note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶25分鐘\n時間到攪拌三次過濾至新的湯鍋\n冰鎮至10分鐘放置冰箱冷藏",
+            shelf: "5天"
+          },
+          "蜜香紅茶": {
+            ratio: 50,
+            temp: "100°C",
+            boilTime: "10分鐘",
+            steamTime: "無",
+            note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶10分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
+            shelf: "5小時"
+          },
+          "安溪烏龍": {
+            ratio: 50,
+            temp: "100°C",
+            boilTime: "9分鐘",
+            steamTime: "無",
+            note: "熱水煮至100°C\n熱水沖入預先準備好的茶葉湯鍋悶9分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
+            shelf: "5小時"
+          },
+          "金萱茶": {
+            ratio: 34,
+            temp: "90-95°C",
+            boilTime: "11分鐘",
+            steamTime: "無",
+            note: "熱水煮至90-95°C(熱水出來即是90-95°C)\n熱水沖入預先準備好的茶葉湯鍋悶11分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)",
+            shelf: "5小時"
+          },
+          "綠茶": {
+            ratio: 50,
+            temp: "80-85°C",
+            boilTime: "7分鐘",
+            steamTime: "5分鐘",
+            note: "熱水加RO水讓溫度到80-85°C\n熱水沖入預先準備好的茶葉湯鍋悶7分鐘\n時間到攪拌三次過濾至保溫茶桶(茶桶需先溫壺)後曝氧5分鐘",
+            shelf: "5小時"
+          },
+          "蕎麥茶": {
+            ratio: 50,
+            temp: "熱水 100°C + 冰塊",
+            boilTime: "3分鐘",
+            steamTime: "30分鐘",
+            note: "置熱水於湯鍋煮沸至100°C\n熱水煮沸後倒入蕎麥電磁爐火力轉至4計時3分鐘\n關閉電源悶30分鐘\n將茶湯過濾至準備好冰塊的茶桶",
+            shelf: "6小時"
+          },
+          "泰式奶茶": {
+            ratio: 12.5,
+            temp: "熱水 100°C",
+            boilTime: "5分鐘",
+            steamTime: "無",
+            note: "置熱水於湯鍋煮沸至100°C\n熱水沖入預先準備好茶葉的湯鍋悶5分鐘\n時間到攪拌三次過濾至準備好的奶精及煉乳湯鍋中煮沸拌勻\n冰鎮至10°C\n冷藏保存3天",
+            shelf: "3天"
+          },
+          "洛神花茶": {
+            ratio: 60,
+            temp: "熱水 100°C",
+            boilTime: "15分鐘",
+            steamTime: "無",
+            note: "置熱水於湯鍋煮沸至100°C\n煮沸後倒入洛神花及紅話梅\n電磁爐轉至2煮15分鐘\n過濾至新的湯鍋冰鎮至10°C放置冷藏保存",
+            shelf: "5天"
+          },
+          "復刻經典奶茶": {
+            ratio: 5,
+            temp: "熱水 100°C",
+            boilTime: "無",
+            steamTime: "無",
+            note: "熱復刻奶茶過濾至準備好奶精粉的湯鍋中\n攪拌均勻後放置電磁爐加熱沸騰\n過濾至湯鍋後冰鎮至10度",
+            shelf: "3天"
+          }
+        };
+
+        function calculate() {
+          const tea = document.getElementById("teaType").value;
+          const totalVolume = parseFloat(document.getElementById("waterVolume").value);
+          const data = teaData[tea];
+
+          if (isNaN(totalVolume) || totalVolume <= 0) {
+            document.getElementById("tearesult").innerHTML = "<span style='color:red;'>請輸入正確的水量</span>";
+            return;
+          }
+
+          let output = "";
+          const grams = (totalVolume / data.ratio).toFixed(1);
+
+          if (tea === "蕎麥茶") {
+            const hot = totalVolume * 3 / 5;
+            const ice = totalVolume * 2 / 5;
+            output = `
           <hr>
           <div class="row"><span class="icon">🔊</span> 茶葉用量：<strong>${grams} 克</strong></div>
           <div class="row"><span class="icon">💧</span> 熱水用量：${hot.toFixed(0)} cc</div>
@@ -198,10 +242,10 @@
           <div class="row"><span class="icon">📅</span> 茶湯效期：${data.shelf}</div>
           <div class="note">${formatNote(data.note)}</div>
         `;
-      } else if (tea === "泰式奶茶") {
-        const milkPowder = totalVolume * 0.18;
-        const condensedMilk = totalVolume * 0.23;
-        output = `
+          } else if (tea === "泰式奶茶") {
+            const milkPowder = totalVolume * 0.18;
+            const condensedMilk = totalVolume * 0.23;
+            output = `
           <hr>
           <div class="row"><span class="icon">🔊</span> 茶葉用量：<strong>${grams} 克</strong></div>
           <div class="row"><span class="icon">💧</span> 熱水用量：${totalVolume.toFixed(0)} cc</div>
@@ -210,9 +254,9 @@
           <div class="row"><span class="icon">📅</span> 茶湯效期：${data.shelf}</div>
           <div class="note">${formatNote(data.note)}</div>
         `;
-      } else if (tea === "復刻經典奶茶") {
-        const milkPowder = (totalVolume / data.ratio).toFixed(1);
-        output = `
+          } else if (tea === "復刻經典奶茶") {
+            const milkPowder = (totalVolume / data.ratio).toFixed(1);
+            output = `
           <hr>
           <div class="row"><span class="icon">💧</span> 茶湯總量：<strong>${totalVolume.toFixed(0)} cc</strong></div>
           <div class="row"><span class="icon">🥛</span> 奶精粉用量：<strong>${milkPowder} 克</strong></div>
@@ -220,9 +264,9 @@
           <div class="row"><span class="icon">📅</span> 茶湯效期：${data.shelf}</div>
           <div class="note">${formatNote(data.note)}</div>
         `;
-      } else if (tea === "洛神花茶") {
-        const plums = Math.round(totalVolume / 1000);
-        output = `
+          } else if (tea === "洛神花茶") {
+            const plums = Math.round(totalVolume / 1000);
+            output = `
           <hr>
           <div class="row"><span class="icon">🔊</span> 茶葉用量：<strong>${grams} 克</strong></div>
           <div class="row"><span class="icon">🍊</span> 梅子用量：${plums} 顆</div>
@@ -231,8 +275,8 @@
           <div class="row"><span class="icon">📅</span> 茶湯效期：${data.shelf}</div>
           <div class="note">${formatNote(data.note)}</div>
         `;
-      } else {
-        output = `
+          } else {
+            output = `
           <hr>
           <div class="row"><span class="icon">🔊</span> 茶葉用量：<strong>${grams} 克</strong></div>
           <div class="row"><span class="icon">🌡️</span> 水溫：${data.temp}</div>
@@ -241,90 +285,64 @@
           <div class="row"><span class="icon">📅</span> 茶湯效期：${data.shelf}</div>
           <div class="note">${formatNote(data.note)}</div>
         `;
-      }
+          }
 
-      document.getElementById("result").innerHTML = output;
-    }
+          document.getElementById("tearesult").innerHTML = output;
+        }
 
-    function formatNote(note) {
-      return note
-        .split(/\r?\n/)
-        .map(line => `<div class="row"><span class="icon">📌</span> ${line}</div>`)
-        .join('');
-    }
-  </script>
-  </div>
+        function formatNote(note) {
+          return note
+            .split(/\r?\n/)
+            .map(line => `<div class="row"><span class="icon">📌</span> ${line}</div>`)
+            .join('');
+        }
 
-  <hr style="margin: 40px 0;">
-  <div class="section">
-    <h2>🍡 配料計算器</h2>
-    <div class="container">
-    
+        const sugarData = {
+          "白玉珍珠": {
+            sugarRatio: 0.4,
+            waterRatio: 0.4,
+            honeyRatio: 0.1,
+            cookTime: 40,
+            steamTime: 40,
+            soakTime: 15,
+            shelfLife: 6
+          },
+          "小粉圓": {
+            sugarRatio: 0.4,
+            waterRatio: 0.4,
+            honeyRatio: 0.1,
+            cookTime: 15,
+            steamTime: 15,
+            soakTime: 10,
+            shelfLife: 6
+          },
+          "小芋圓": {
+            sugarRatio: 0.4,
+            waterRatio: 0,
+            honeyRatio: 0,
+            cookTime: 5,
+            steamTime: 5,
+            soakTime: 5,
+            shelfLife: 4
+          }
+        };
 
-    <label>選擇品項</label>
-    <select id="itemType">
-      <option value="白玉珍珠">白玉珍珠</option>
-      <option value="小粉圓">小粉圓</option>
-      <option value="小芋圓">小芋圓</option>
-      <option value="蜜糖">蜜糖</option>
-      <option value="蜜漬鳳梨">蜜漬鳳梨</option>
-    </select>
+        function calculateSugar() {
+          const type = document.getElementById("itemType").value;
+          const weight = parseFloat(document.getElementById("weight").value);
 
-    <label>重量（g）</label>
-    <input type="number" id="weight" placeholder="例如：1000" min="1">
+          if (isNaN(weight) || weight <= 0) {
+            document.getElementById("toppingresult").innerHTML = "<span style='color:red;'>請輸入正確的重量</span>";
+            return;
+          }
 
-    <button onclick="calculateSugar()">計算配料比例</button>
+          // 蜜糖邏輯
+          if (type === "蜜糖") {
+            const sugar = weight;
+            const water = sugar / 2;
+            const honey = sugar / 10;
 
-    <div id="result"></div>
-  </div>
-
-  <script>
-    const sugarData = {
-      "白玉珍珠": {
-        sugarRatio: 0.4,
-        waterRatio: 0.4,
-        honeyRatio: 0.1,
-        cookTime: 40,
-        steamTime: 40,
-        soakTime: 15,
-        shelfLife: 6
-      },
-      "小粉圓": {
-        sugarRatio: 0.4,
-        waterRatio: 0.4,
-        honeyRatio: 0.1,
-        cookTime: 15,
-        steamTime: 15,
-        soakTime: 10,
-        shelfLife: 6
-      },
-      "小芋圓": {
-        sugarRatio: 0.4,
-        waterRatio: 0,
-        honeyRatio: 0,
-        cookTime: 5,
-        steamTime: 5,
-        soakTime: 5,
-        shelfLife: 4
-      }
-    };
-
-    function calculateSugar() {
-      const type = document.getElementById("itemType").value;
-      const weight = parseFloat(document.getElementById("weight").value);
-
-      if (isNaN(weight) || weight <= 0) {
-        document.getElementById("result").innerHTML = "<span style='color:red;'>請輸入正確的重量</span>";
-        return;
-      }
-
-      // 蜜糖邏輯
-      if (type === "蜜糖") {
-        const sugar = weight;
-        const water = sugar / 2;
-        const honey = sugar / 10;
-
-        document.getElementById("result").innerHTML = `
+            document.getElementById("toppingresult").innerHTML = `
           <hr>
           <div class="row"><span class="icon">🍬</span> 二砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
           <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
@@ -335,17 +353,17 @@
             📌 過濾至新湯鍋，冰鎮至30-35度，放常溫保存<br>
           </div>
         `;
-        return;
-      }
+            return;
+          }
 
-      // 蜜漬鳳梨邏輯
-      if (type === "蜜漬鳳梨") {
-        const pineapple = weight;
-        const sugar = pineapple;
-        const lemonJuice = pineapple * 0.05;
-        const honey = pineapple * 0.05;
+          // 蜜漬鳳梨邏輯
+          if (type === "蜜漬鳳梨") {
+            const pineapple = weight;
+            const sugar = pineapple;
+            const lemonJuice = pineapple * 0.05;
+            const honey = pineapple * 0.05;
 
-        document.getElementById("result").innerHTML = `
+            document.getElementById("toppingresult").innerHTML = `
           <hr>
           <div class="row"><span class="icon">🍍</span> 鳳梨果肉：<strong>${pineapple.toFixed(1)} 克</strong></div>
           <div class="row"><span class="icon">🍬</span> 白砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
@@ -357,21 +375,21 @@
             📌 鳳梨丁&糖漿效期30天<br>
           </div>
         `;
-        return;
-      }
+            return;
+          }
 
-      // 其他品項
-      const data = sugarData[type];
-      const sugar = weight * data.sugarRatio;
-      const water = weight * data.waterRatio;
-      const honey = weight * data.honeyRatio;
+          // 其他品項
+          const data = sugarData[type];
+          const sugar = weight * data.sugarRatio;
+          const water = weight * data.waterRatio;
+          const honey = weight * data.honeyRatio;
 
-      // 動態糖名稱
-      let sugarLabel = "砂糖";
-      if (type === "白玉珍珠" || type === "小芋圓") sugarLabel = "白砂糖";
-      else if (type === "小粉圓") sugarLabel = "二砂糖";
+          // 動態糖名稱
+          let sugarLabel = "砂糖";
+          if (type === "白玉珍珠" || type === "小芋圓") sugarLabel = "白砂糖";
+          else if (type === "小粉圓") sugarLabel = "二砂糖";
 
-      let output = `
+          let output = `
         <hr>
         <div class="row"><span class="icon">🍬</span> ${sugarLabel}：<strong>${sugar.toFixed(1)} 克</strong></div>
         <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
@@ -382,9 +400,10 @@
         <div class="note">🧊 存放時間：${data.shelfLife} 小時內使用完畢</div>
       `;
 
-      document.getElementById("result").innerHTML = output;
-    }
-  </script>
-  </div>
+          document.getElementById("toppingresult").innerHTML = output;
+        }
+      </script>
+    </div>
 </body>
+
 </html>
