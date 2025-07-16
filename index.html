@@ -1,10 +1,10 @@
-<!-- ⭐完整 HTML 開始 -->
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🌿茶葉用量計算器</title>
+  <title>茶葉與配料計算器</title>
   <style>
     body {
       font-family: "Helvetica", sans-serif;
@@ -73,8 +73,10 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>🌿茶葉計算器</h2>
+  <div class="section">
+    <h2>🌿 茶葉計算器</h2>
+    <div class="container">
+    
     <label>選擇茶種</label>
     <select id="teaType">
       <option value="復刻紅茶">復刻紅茶</option>
@@ -251,6 +253,138 @@
         .join('');
     }
   </script>
+  </div>
+
+  <hr style="margin: 40px 0;">
+  <div class="section">
+    <h2>🍡 配料計算器</h2>
+    <div class="container">
+    
+
+    <label>選擇品項</label>
+    <select id="itemType">
+      <option value="白玉珍珠">白玉珍珠</option>
+      <option value="小粉圓">小粉圓</option>
+      <option value="小芋圓">小芋圓</option>
+      <option value="蜜糖">蜜糖</option>
+      <option value="蜜漬鳳梨">蜜漬鳳梨</option>
+    </select>
+
+    <label>重量（g）</label>
+    <input type="number" id="weight" placeholder="例如：1000" min="1">
+
+    <button onclick="calculateSugar()">計算配料比例</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const sugarData = {
+      "白玉珍珠": {
+        sugarRatio: 0.4,
+        waterRatio: 0.4,
+        honeyRatio: 0.1,
+        cookTime: 40,
+        steamTime: 40,
+        soakTime: 15,
+        shelfLife: 6
+      },
+      "小粉圓": {
+        sugarRatio: 0.4,
+        waterRatio: 0.4,
+        honeyRatio: 0.1,
+        cookTime: 15,
+        steamTime: 15,
+        soakTime: 10,
+        shelfLife: 6
+      },
+      "小芋圓": {
+        sugarRatio: 0.4,
+        waterRatio: 0,
+        honeyRatio: 0,
+        cookTime: 5,
+        steamTime: 5,
+        soakTime: 5,
+        shelfLife: 4
+      }
+    };
+
+    function calculateSugar() {
+      const type = document.getElementById("itemType").value;
+      const weight = parseFloat(document.getElementById("weight").value);
+
+      if (isNaN(weight) || weight <= 0) {
+        document.getElementById("result").innerHTML = "<span style='color:red;'>請輸入正確的重量</span>";
+        return;
+      }
+
+      // 蜜糖邏輯
+      if (type === "蜜糖") {
+        const sugar = weight;
+        const water = sugar / 2;
+        const honey = sugar / 10;
+
+        document.getElementById("result").innerHTML = `
+          <hr>
+          <div class="row"><span class="icon">🍬</span> 二砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
+          <div class="row"><span class="icon">🍯</span> 蜂蜜：<strong>${honey.toFixed(1)} 克</strong></div>
+          <div class="note">
+            📌 至二砂糖及熱水於湯鍋內，電磁爐火力設定4<br>
+            📌 煮沸後火力設定2計時3分鐘後關閉電磁爐<br>
+            📌 過濾至新湯鍋，冰鎮至30-35度，放常溫保存<br>
+          </div>
+        `;
+        return;
+      }
+
+      // 蜜漬鳳梨邏輯
+      if (type === "蜜漬鳳梨") {
+        const pineapple = weight;
+        const sugar = pineapple;
+        const lemonJuice = pineapple * 0.05;
+        const honey = pineapple * 0.05;
+
+        document.getElementById("result").innerHTML = `
+          <hr>
+          <div class="row"><span class="icon">🍍</span> 鳳梨果肉：<strong>${pineapple.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍬</span> 白砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍋</span> 檸檬汁：<strong>${lemonJuice.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍯</span> 蜂蜜：<strong>${honey.toFixed(1)} 克</strong></div>
+          <div class="note">
+            📌 鳳梨置入鍋中放置電磁爐火力設定2，待鳳梨煮出湯後倒入砂糖、檸檬汁、蜂蜜</br>
+            📌 砂糖融解後煮15分鐘<br>
+            📌 鳳梨丁&糖漿效期30天<br>
+          </div>
+        `;
+        return;
+      }
+
+      // 其他品項
+      const data = sugarData[type];
+      const sugar = weight * data.sugarRatio;
+      const water = weight * data.waterRatio;
+      const honey = weight * data.honeyRatio;
+
+      // 動態糖名稱
+      let sugarLabel = "砂糖";
+      if (type === "白玉珍珠" || type === "小芋圓") sugarLabel = "白砂糖";
+      else if (type === "小粉圓") sugarLabel = "二砂糖";
+
+      let output = `
+        <hr>
+        <div class="row"><span class="icon">🍬</span> ${sugarLabel}：<strong>${sugar.toFixed(1)} 克</strong></div>
+        <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
+        <div class="row"><span class="icon">🍯</span> 蜂蜜：<strong>${honey > 0 ? honey.toFixed(1) + ' 克' : '不加蜂蜜'}</strong></div>
+        <div class="row"><span class="icon">🔥</span> 煮：${data.cookTime} 分鐘</div>
+        <div class="row"><span class="icon">😌</span> 悶：${data.steamTime} 分鐘</div>
+        <div class="row"><span class="icon">🕒</span> 蜜糖時間：${data.soakTime} 分鐘</div>
+        <div class="note">🧊 存放時間：${data.shelfLife} 小時內使用完畢</div>
+      `;
+
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
+  </div>
 </body>
 </html>
-<!-- ⭐完整 HTML 結束 -->
