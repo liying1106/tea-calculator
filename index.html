@@ -128,6 +128,8 @@
           <option value="小芋圓">小芋圓</option>
           <option value="蜜糖">蜜糖</option>
           <option value="蜜漬鳳梨">蜜漬鳳梨</option>
+          <option value="芒果醬">芒果醬</option>
+          <option value="西谷米">西谷米</option>
         </select>
 
         <label>重量（g）</label>
@@ -376,6 +378,58 @@
         `;
             return;
           }
+
+          // 芒果醬
+      if (type === "芒果醬") {
+        const mango = weight;
+        const sugar = mango * 0.28;
+        const lemonJuice = mango * 0.025;
+        const honey = mango * 0.025;
+
+        document.getElementById("toppingresult").innerHTML = `
+          <hr>
+          <div class="row"><span class="icon">🥭</span> 芒果：<strong>${mango.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍬</span> 白砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍋</span> 檸檬汁：<strong>${lemonJuice.toFixed(1)} cc</strong></div>
+          <div class="row"><span class="icon">🍯</span> 蜂蜜：<strong>${honey.toFixed(1)} cc</strong></div>
+
+          <div class="note">
+            <strong>🥭 芒果醬做法</strong><br>
+
+            1️⃣ 將砂糖加入芒果中攪拌均勻，再加入檸檬汁及蜂蜜攪拌均勻。<br>
+            2️⃣ 電磁爐火力設定 <strong>6</strong>，持續攪拌至表面開始冒泡。<br>
+            3️⃣ 冒泡後火力調整為 <strong>4</strong>，計時 <strong>15 分鐘</strong>，期間須持續攪拌確認無黏鍋。<br>
+            4️⃣ 完成後關閉電磁爐，放涼至常溫即可。<br>
+            🧊 <strong>芒果醬效期：1 個月</strong>
+          </div>
+        `;
+        return;
+      }
+
+      // 西谷米
+      if (type === "西谷米") {
+        const sago = weight;
+        const sugar = sago / 3;
+        const water = sago * 2 / 3;
+
+        document.getElementById("toppingresult").innerHTML = `
+          <hr>
+          <div class="row"><span class="icon">⚪</span> 西谷米：<strong>${sago.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">🍬</span> 白砂糖：<strong>${sugar.toFixed(1)} 克</strong></div>
+          <div class="row"><span class="icon">💧</span> 熱水：<strong>${water.toFixed(1)} cc</strong></div>
+
+          <div class="note">
+            <strong>⚪ 西谷米做法</strong><br>
+            1️⃣ 將西谷米放入煮沸的熱水中。<br>
+            2️⃣ 持續攪拌至西谷米浮上水面並再次沸騰（火力 <strong>8</strong>）。<br>
+            3️⃣ 確認無黏鍋後，火力調整為 <strong>4</strong>，計時 <strong>20 分鐘</strong>。<br>
+            4️⃣ 關閉電磁爐，蓋上鍋蓋，再悶 <strong>20 分鐘</strong>。<br>
+            5️⃣ 將西谷米濾出，以生飲水沖洗乾淨。<br>
+            6️⃣ 加入調製好的糖水攪拌均勻即可使用。
+          </div>
+        `;
+        return;
+      }
 
           // 其他品項
           const data = sugarData[type];
